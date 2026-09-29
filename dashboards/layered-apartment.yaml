@@ -1,0 +1,3453 @@
+views:
+- title: Apartment
+  path: home
+  icon: mdi:home-variant
+  type: sections
+  max_columns: 2
+  dense_section_placement: true
+  subview: false
+  sections:
+  - type: grid
+    column_span: 2
+    cards:
+    - type: custom:studio-dynamic-island
+      grid_options:
+        columns: full
+        rows: auto
+  - type: grid
+    column_span: 2
+    cards:
+    - type: custom:studio-climate-weather-card
+      weather_entity: weather.forecast_home
+      climate_entity: climate.carriercontroller
+      sun_entity: sun.sun
+      humidity_entity: sensor.co2_humidity
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: custom:studio-lights-ambient-card
+      title: Studio Lighting
+      grid_options:
+        columns: 12
+        rows: auto
+  - type: grid
+    column_span: 2
+    cards:
+    - type: custom:studio-media-card
+      entity: media_player.bedroom_tv_2
+      media_type: video
+      title: Video
+      icon: mdi:television
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: custom:studio-media-card
+      entity: media_player.bedroom_speaker
+      media_type: music
+      title: Music
+      icon: mdi:speaker
+      grid_options:
+        columns: 12
+        rows: auto
+  - type: grid
+    column_span: 2
+    cards:
+    - type: custom:studio-power-flow-card
+      title: Studio Power Distribution
+      main_entity: sensor.wattmeter_power_minute_average
+      today_entity: sensor.wattmeter_energy_today
+      balance_entity: sensor.balance_power_minute_average
+      popup_hash: '#power'
+      circuits:
+      - id: fridge
+        sector: kitchen
+        name: Fridge & Table
+        entity: sensor.refrigerator_table_receptacle_power_minute_average
+        icon: mdi:fridge-outline
+        color: '#F59E0B'
+      - id: kitch
+        sector: kitchen
+        name: Kitchen Outlets
+        entity: sensor.kitchen_receptacles_power_minute_average
+        icon: mdi:power-socket-us
+        color: '#EA580C'
+      - id: micro
+        sector: kitchen
+        name: Microwave & Cook
+        entity: sensor.microwave_power_minute_average
+        icon: mdi:microwave
+        color: '#EF4444'
+      - id: bed
+        sector: bed
+        name: Bedroom Outlets
+        entity: sensor.bedroom_receptacles_power_minute_average
+        icon: mdi:bed
+        color: '#38BDF8'
+      - id: print
+        sector: bed
+        name: 3D Printer
+        entity: sensor.klipper_energy_power
+        icon: mdi:printer-3d
+        color: '#06B6D4'
+        subtag: ↳ Bedroom Breaker
+        parent: bed
+      - id: ceil
+        sector: bed
+        name: Ceiling & Fan
+        entity: sensor.ceiling_lights_fan_power_minute_average
+        icon: mdi:ceiling-light
+        color: '#FBBF24'
+      - id: bal
+        sector: bal
+        name: Balance Breaker
+        entity: sensor.balance_power_minute_average
+        icon: mdi:scale-balance
+        color: '#94A3B8'
+      - id: net
+        sector: bal
+        name: Network Server
+        entity: sensor.networknonups_energy_power
+        icon: mdi:server-network
+        color: '#A855F7'
+        subtag: ↳ Balance Breaker
+        parent: bal
+      grid_options:
+        columns: full
+        rows: auto
+    - type: custom:studio-klipper-card
+      title: MainPi Klipper 3D Printer
+      web_url: http://192.168.86.220
+      grid_options:
+        columns: full
+        rows: auto
+  - type: grid
+    column_span: 2
+    cards:
+    - type: vertical-stack
+      cards:
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#lights'
+        name: Studio
+        icon: mdi:floor-plan
+        entity: light.ceiling_lights
+        show_header: true
+        show_close_button: true
+        show_previous_button: true
+        popup_style: bubble
+        popup_mode: default
+        with_bottom_offset: true
+        close_by_clicking_outside: true
+        width_desktop: 560px
+        bg_opacity: '86'
+        bg_blur: '16'
+        shadow_opacity: '36'
+        cards:
+        - type: custom:bubble-card
+          card_type: separator
+          name: Studio
+          icon: mdi:floor-plan
+          modules: []
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.ceiling_lights
+          name: Ceiling Lights
+          icon: mdi:ceiling-light-multiple
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main: []
+            bottom:
+            - entity: light.ceiling_lights
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.kitchen_lamp_light
+          name: Kitchen Lamp
+          icon: mdi:lamp
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.kitchen_lamp_light
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            bottom:
+            - entity: light.kitchen_lamp_light
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.ceiling_fan_light_2
+          name: Ceiling Fan
+          icon: mdi:ceiling-fan-light
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.ceiling_fan_light_2
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            bottom:
+            - entity: light.ceiling_fan_light_2
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.lampfloor_light_2
+          name: Standing Lamp
+          icon: mdi:floor-lamp
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.lampfloor_light_2
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            bottom:
+            - entity: light.lampfloor_light_2
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.beam
+          name: Beam
+          icon: mdi:led-strip-variant
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.beam
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.beam
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.beam
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.beam
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.threelamps
+          name: Three Bulbs
+          icon: mdi:lightbulb-multiple
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.threelamps
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.threelamps
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.threelamps
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.threelamps
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.floor_light
+          name: Light Three
+          icon: mdi:lightbulb
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.floor_light
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.floor_light
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.floor_light
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.floor_light
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.shelf
+          name: Light One
+          icon: mdi:lightbulb-outline
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.shelf
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.shelf
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.shelf
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.shelf
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.printer_light
+          name: Printer Light
+          icon: mdi:printer
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.printer_light
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.printer_light
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.printer_light
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.printer_light
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.huestrips
+          name: Hue Strip
+          icon: mdi:led-strip-variant
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.huestrips
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.huestrips
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.huestrips
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.huestrips
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.hue_play_left
+          name: Play Left
+          icon: mdi:led-variant-on
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.hue_play_left
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.hue_play_left
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.hue_play_left
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.hue_play_left
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.hue_play_right
+          name: Play Right
+          icon: mdi:led-variant-on
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.hue_play_right
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.hue_play_right
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.hue_play_right
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.hue_play_right
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.monitor
+          name: Monitor
+          icon: mdi:monitor-shimmer
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.monitor
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.monitor
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.monitor
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.closet_beam
+          name: Closet Beam
+          icon: mdi:light-recessed
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.closet_beam
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.closet_beam
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.closet_beam
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.closet_beam
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.shelf_lamp
+          name: Closet Lamp
+          icon: mdi:lamp
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.shelf_lamp
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            bottom:
+            - entity: light.shelf_lamp
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.candle
+          name: Candle
+          icon: mdi:candle
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.candle
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.candle
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.candle
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.candle
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.wled
+          name: WLED Squares
+          icon: mdi:wall-sconce-flat
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.wled
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.wled
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.wled
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.bathroom_lighting
+          name: Bathroom
+          icon: mdi:vanity-light
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main: []
+            bottom:
+            - entity: light.bathroom_lighting
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.bathroom_clean_right
+          name: Clean Right
+          icon: mdi:lightbulb-fluorescent-tube
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.bathroom_clean_right
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.bathroom_clean_right
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.bathroom_clean_right
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.bathroom_clean_right
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.vanity_left
+          name: Vanity Left
+          icon: mdi:mirror
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main: []
+            bottom:
+            - entity: light.vanity_left
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.bathroom_vanity_right
+          name: Vanity Right
+          icon: mdi:mirror
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main: []
+            bottom:
+            - entity: light.bathroom_vanity_right
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: switch.sonoff_1000d4dfbd_1
+          name: Table Light
+          icon: mdi:desk-lamp
+          card_layout: large
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: separator
+          name: Effects
+          icon: mdi:auto-fix
+          modules: []
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 3
+          modules:
+          - subbutton_animations
+          subbutton_animations:
+            subbutton1:
+              animation: bounce
+              condition:
+              - condition: state
+                entity: input_boolean.party_hue
+                state: 'on'
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: Party Hue
+                icon: mdi:party-popper
+                entity: input_boolean.party_hue
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: true
+                fill_width: false
+                tap_action:
+                  action: toggle
+              - name: Party Lights
+                icon: mdi:string-lights
+                entity: input_boolean.party_lights
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: true
+                fill_width: false
+                tap_action:
+                  action: toggle
+              - name: Lights on
+                icon: mdi:lightbulb-on
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.clean_2
+              - name: Clean LIFX
+                icon: mdi:flower
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.clean_plant
+              - name: Fire
+                icon: mdi:fire
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.lifx_fireeffect
+              - name: Morph slow
+                icon: mdi:crop-square
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.morph_slow_rgb
+              - name: Morph fast
+                icon: mdi:square
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.morph_slow_rgb_duplicate
+              - name: Stop effects
+                icon: mdi:stop
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.stop_effects_lifx
+              - name: Clean vanity
+                icon: mdi:mirror-variant
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.clean_vanity
+        - type: custom:bubble-card
+          card_type: select
+          entity: input_select.morpheffect
+          name: Morph
+          icon: mdi:transition
+          card_layout: large
+          show_name: true
+          state_content: state
+          modules: []
+        - type: custom:bubble-card
+          card_type: select
+          entity: input_select.tile_effect
+          name: Tile effect
+          icon: mdi:view-grid
+          card_layout: large
+          show_name: true
+          state_content: state
+          modules: []
+        - type: custom:bubble-card
+          card_type: select
+          entity: input_select.counter_lights
+          name: Counter lights
+          icon: mdi:countertop
+          card_layout: large
+          show_name: true
+          state_content: state
+          modules: []
+        - type: custom:bubble-card
+          card_type: separator
+          name: Tiles
+          icon: mdi:view-grid
+          modules: []
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.bedroom_tiles
+          name: Bedroom Tiles
+          icon: mdi:view-grid
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.bedroom_tiles
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.bedroom_tiles
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.bedroom_tiles
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.bedroom_tiles
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.tileright
+          name: Left Tile
+          icon: mdi:square
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.tileright
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.tileright
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.tileright
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.tileright
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.plustile
+          name: Plus Tile
+          icon: mdi:plus-box
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.plustile
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.plustile
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.plustile
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.plustile
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.plustile_2
+          name: Plus Tile 2
+          icon: mdi:plus-box-outline
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.plustile_2
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.plustile_2
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            bottom:
+            - entity: light.plustile_2
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: button
+          button_type: switch
+          entity: light.righttile
+          name: Right Tile
+          icon: mdi:square-outline
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          card_layout: large
+          rows: 3
+          use_accent_color: false
+          button_action:
+            tap_action:
+              action: toggle
+          hold_action:
+            action: more-info
+          sub_button:
+            main:
+            - entity: light.righttile
+              name: Warmth
+              icon: mdi:thermometer
+              sub_button_type: slider
+              light_slider_type: white_temp
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.righttile
+              name: Color
+              icon: mdi:palette
+              sub_button_type: slider
+              light_slider_type: hue
+              hue_force_saturation: true
+              always_visible: false
+              show_name: true
+              show_icon: true
+              show_background: true
+            - entity: light.righttile
+              name: Effect
+              icon: mdi:auto-fix
+              sub_button_type: select
+              select_attribute: effect_list
+              show_name: true
+              show_icon: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: light.righttile
+              name: Brightness
+              sub_button_type: slider
+              light_slider_type: brightness
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              slider_live_update: false
+              light_transition: true
+              light_transition_time: 280
+              allow_light_slider_to_0: false
+          modules:
+          - studio_fill
+        modules:
+        - liquid_glass_light
+        liquid_glass_light:
+          radius: 32
+          blur: 8
+          saturate: 140
+          depth: 4
+          strength: 60
+          highlightOpacity: 0.4
+          showBorder: false
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#climate'
+        name: Climate
+        icon: mdi:thermostat
+        entity: climate.carriercontroller
+        show_header: true
+        show_close_button: true
+        show_previous_button: true
+        popup_style: bubble
+        popup_mode: default
+        with_bottom_offset: true
+        close_by_clicking_outside: true
+        width_desktop: 560px
+        bg_opacity: '86'
+        bg_blur: '16'
+        shadow_opacity: '36'
+        cards:
+        - type: custom:bubble-card
+          card_type: separator
+          name: Climate
+          icon: mdi:thermostat
+          modules: []
+        - type: custom:bubble-card
+          card_type: climate
+          entity: climate.carriercontroller
+          name: Climate
+          icon: mdi:thermostat
+          state_color: true
+          card_layout: large
+          rows: 4
+          step: 1
+          min_temp: 62
+          max_temp: 86
+          show_name: true
+          show_icon: true
+          scrolling_effect: true
+          state_content: '{{ state_attr(''climate.carriercontroller'', ''current_temperature'')
+            | round(0) }}° now · {{ state_attr(''climate.carriercontroller'', ''temperature'')
+            | round(0) }}° set'
+          modules:
+          - liquid_glass_light
+          - subbutton_animations
+          - studio_fill
+          liquid_glass_light:
+            radius: 32
+            blur: 8
+            saturate: 140
+            depth: 4
+            strength: 60
+            highlightOpacity: 0.4
+            showBorder: false
+          subbutton_animations:
+            subbutton1:
+              animation: spin
+              condition:
+              - condition: template
+                value_template: '{{ not is_state(''climate.carriercontroller'', ''off'')
+                  }}'
+          sub_button:
+            main:
+            - entity: climate.carriercontroller
+              name: Fan
+              icon: mdi:fan
+              show_name: false
+              show_icon: true
+              show_state: true
+              state_content: state
+              show_background: true
+              tap_action:
+                action: more-info
+            - entity: climate.carriercontroller
+              name: Mode
+              icon: mdi:tune-variant
+              sub_button_type: select
+              select_attribute: hvac_modes
+              show_name: true
+              show_arrow: false
+              state_content: state
+              show_background: true
+            - entity: climate.carriercontroller
+              name: Speed
+              icon: mdi:fan-speed-1
+              sub_button_type: select
+              select_attribute: fan_modes
+              show_name: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - buttons_layout: inline
+              justify_content: fill
+              group:
+              - name: Eco
+                icon: mdi:leaf
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.eco_2
+              - name: Boost
+                icon: mdi:fan-plus
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.boost
+              - name: Aim
+                icon: mdi:rotate-left-variant
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.aimupwards
+              - name: Silent
+                icon: mdi:bell-off
+                show_name: true
+                show_icon: true
+                show_background: true
+                fill_width: false
+                tap_action:
+                  action: perform-action
+                  perform_action: script.silent
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 2
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: CO₂
+                icon: mdi:molecule-co2
+                entity: sensor.carbonoxygensquared
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' ppm''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Humidity
+                icon: mdi:water-percent
+                entity: sensor.co2_humidity
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+          modules: []
+        modules:
+        - liquid_glass_light
+        liquid_glass_light:
+          radius: 32
+          blur: 8
+          saturate: 140
+          depth: 4
+          strength: 60
+          highlightOpacity: 0.4
+          showBorder: false
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#media'
+        name: Media
+        icon: mdi:play-circle
+        entity: media_player.bedroom_hub
+        show_header: true
+        show_close_button: true
+        show_previous_button: true
+        popup_style: bubble
+        popup_mode: default
+        with_bottom_offset: true
+        close_by_clicking_outside: true
+        width_desktop: 560px
+        bg_opacity: '86'
+        bg_blur: '16'
+        shadow_opacity: '36'
+        cards:
+        - type: custom:bubble-card
+          card_type: separator
+          name: Playing
+          icon: mdi:play-circle
+          modules: []
+        - type: custom:bubble-card
+          card_type: media-player
+          entity: media_player.bedroom_hub
+          name: Bedroom Hub
+          icon: mdi:google-home
+          show_icon: true
+          show_name: true
+          scrolling_effect: true
+          cover_background: true
+          card_layout: large
+          rows: 3
+          state_content:
+          - media_title
+          - state
+          sub_button:
+            main:
+            - entity: media_player.bedroom_hub
+              name: Now
+              icon: mdi:music-note
+              show_name: false
+              show_icon: true
+              show_background: true
+              state_background: true
+              tap_action:
+                action: more-info
+            bottom:
+            - entity: media_player.bedroom_hub
+              name: Volume
+              icon: mdi:volume-high
+              sub_button_type: slider
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              min_value: 0
+              max_value: 1
+              step: 0.05
+              slider_live_update: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: media-player
+          entity: media_player.derek_s_tv
+          name: Living TV
+          icon: mdi:television
+          show_icon: true
+          show_name: true
+          scrolling_effect: true
+          cover_background: true
+          card_layout: large
+          rows: 3
+          state_content:
+          - media_title
+          - state
+          sub_button:
+            main:
+            - entity: media_player.derek_s_tv
+              name: Now
+              icon: mdi:music-note
+              show_name: false
+              show_icon: true
+              show_background: true
+              state_background: true
+              tap_action:
+                action: more-info
+            - entity: media_player.derek_s_tv
+              name: Source
+              icon: mdi:import
+              sub_button_type: select
+              select_attribute: source_list
+              show_name: true
+              show_arrow: false
+              show_background: true
+            bottom:
+            - entity: media_player.derek_s_tv
+              name: Volume
+              icon: mdi:volume-high
+              sub_button_type: slider
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              min_value: 0
+              max_value: 1
+              step: 0.05
+              slider_live_update: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: media-player
+          entity: media_player.bedroom_tv_2
+          name: Bedroom TV
+          icon: mdi:television
+          show_icon: true
+          show_name: true
+          scrolling_effect: true
+          cover_background: true
+          card_layout: large
+          rows: 3
+          state_content:
+          - media_title
+          - state
+          sub_button:
+            main:
+            - entity: media_player.bedroom_tv_2
+              name: Now
+              icon: mdi:music-note
+              show_name: false
+              show_icon: true
+              show_background: true
+              state_background: true
+              tap_action:
+                action: more-info
+            bottom:
+            - entity: media_player.bedroom_tv_2
+              name: Volume
+              icon: mdi:volume-high
+              sub_button_type: slider
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              min_value: 0
+              max_value: 1
+              step: 0.05
+              slider_live_update: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: media-player
+          entity: media_player.nesthubmax3329
+          name: Kitchen Display
+          icon: mdi:tablet-dashboard
+          show_icon: true
+          show_name: true
+          scrolling_effect: true
+          cover_background: true
+          card_layout: large
+          rows: 3
+          state_content:
+          - media_title
+          - state
+          sub_button:
+            main:
+            - entity: media_player.nesthubmax3329
+              name: Now
+              icon: mdi:music-note
+              show_name: false
+              show_icon: true
+              show_background: true
+              state_background: true
+              tap_action:
+                action: more-info
+            bottom:
+            - entity: media_player.nesthubmax3329
+              name: Volume
+              icon: mdi:volume-high
+              sub_button_type: slider
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              min_value: 0
+              max_value: 1
+              step: 0.05
+              slider_live_update: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: media-player
+          entity: media_player.desk_hub
+          name: Desk Hub
+          icon: mdi:google-home
+          show_icon: true
+          show_name: true
+          scrolling_effect: true
+          cover_background: true
+          card_layout: large
+          rows: 3
+          state_content:
+          - media_title
+          - state
+          sub_button:
+            main:
+            - entity: media_player.desk_hub
+              name: Now
+              icon: mdi:music-note
+              show_name: false
+              show_icon: true
+              show_background: true
+              state_background: true
+              tap_action:
+                action: more-info
+            bottom:
+            - entity: media_player.desk_hub
+              name: Volume
+              icon: mdi:volume-high
+              sub_button_type: slider
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              min_value: 0
+              max_value: 1
+              step: 0.05
+              slider_live_update: false
+          modules:
+          - studio_fill
+        - type: custom:bubble-card
+          card_type: media-player
+          entity: media_player.bedroom_speaker
+          name: Bedroom Speaker
+          icon: mdi:speaker
+          show_icon: true
+          show_name: true
+          scrolling_effect: true
+          cover_background: true
+          card_layout: large
+          rows: 3
+          state_content:
+          - media_title
+          - state
+          sub_button:
+            main:
+            - entity: media_player.bedroom_speaker
+              name: Now
+              icon: mdi:music-note
+              show_name: false
+              show_icon: true
+              show_background: true
+              state_background: true
+              tap_action:
+                action: more-info
+            bottom:
+            - entity: media_player.bedroom_speaker
+              name: Volume
+              icon: mdi:volume-high
+              sub_button_type: slider
+              always_visible: true
+              show_button_info: false
+              show_icon: false
+              show_name: false
+              fill_width: true
+              min_value: 0
+              max_value: 1
+              step: 0.05
+              slider_live_update: false
+          modules:
+          - studio_fill
+        modules:
+        - liquid_glass_light
+        liquid_glass_light:
+          radius: 32
+          blur: 8
+          saturate: 140
+          depth: 4
+          strength: 60
+          highlightOpacity: 0.4
+          showBorder: false
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#power'
+        name: Power
+        icon: mdi:flash
+        entity: sensor.wattmeter_power_minute_average
+        show_header: true
+        show_close_button: true
+        show_previous_button: true
+        popup_style: bubble
+        popup_mode: default
+        with_bottom_offset: true
+        close_by_clicking_outside: true
+        width_desktop: 720px
+        bg_opacity: '86'
+        bg_blur: '16'
+        shadow_opacity: '36'
+        cards:
+        - type: custom:bubble-card
+          card_type: separator
+          name: Apartment
+          icon: mdi:flash
+          modules: []
+        - type: custom:bubble-card
+          card_type: button
+          button_type: slider
+          entity: sensor.wattmeter_power_minute_average
+          name: Main
+          icon: mdi:flash
+          read_only_slider: true
+          min_value: 0
+          max_value: 2500
+          slider_value_position: hidden
+          show_name: true
+          show_icon: true
+          scrolling_effect: false
+          card_layout: large
+          rows: 4
+          state_content:
+          - '{{ states(''sensor.wattmeter_power_minute_average'') | float(0) | round(0)
+            ~ '' W'' }}'
+          - '{{ states(''sensor.wattmeter_energy_today'') | float(0) | round(2) ~
+            '' kWh today'' }}'
+          - '{{ states(''sensor.wattmeter_energy_this_month'') | float(0) | round(0)
+            ~ '' kWh month'' }}'
+          button_action:
+            tap_action:
+              action: more-info
+          modules:
+          - liquid_glass_light
+          - studio_fill
+          liquid_glass_light:
+            radius: 32
+            blur: 8
+            saturate: 140
+            depth: 4
+            strength: 60
+            highlightOpacity: 0.4
+            showBorder: false
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: fill
+              group:
+              - name: Today
+                icon: mdi:calendar-today
+                entity: sensor.wattmeter_energy_today
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' kWh''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Month
+                icon: mdi:calendar-month
+                entity: sensor.wattmeter_energy_this_month
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' kWh''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Today $
+                icon: mdi:currency-usd
+                entity: sensor.wattmeter_today_daily_energy_cost
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' $'' }}'
+                tap_action:
+                  action: more-info
+              - name: Month $
+                icon: mdi:cash-multiple
+                entity: sensor.wattmeter_today_monthly_energy_cost
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' $'' }}'
+                tap_action:
+                  action: more-info
+              - name: Volts
+                icon: mdi:sine-wave
+                entity: sensor.networknonups_energy_voltage
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' V'' }}'
+                tap_action:
+                  action: more-info
+              - name: $ / h
+                icon: mdi:timer-outline
+                entity: sensor.wattmeter_minute_average_real_time_energy_cost
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) }}'
+                tap_action:
+                  action: more-info
+        - type: custom:bubble-card
+          card_type: separator
+          name: Circuits
+          icon: mdi:transmission-tower
+          modules: []
+        - type: grid
+          columns: 2
+          square: false
+          cards:
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.bedroom_receptacles_power_minute_average
+            name: Bedroom
+            icon: mdi:power-socket-us
+            read_only_slider: true
+            min_value: 0
+            max_value: 900
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.bedroom_receptacles_power_minute_average'') | float(0)
+              | round(0) ~ '' W'' }}'
+            - '{{ states(''sensor.bedroom_receptacles_energy_today'') | float(0) |
+              round(2) ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.balance_power_minute_average
+            name: Balance
+            icon: mdi:scale-balance
+            read_only_slider: true
+            min_value: 0
+            max_value: 900
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.balance_power_minute_average'') | float(0) | round(0)
+              ~ '' W'' }}'
+            - '{{ states(''sensor.balance_energy_today'') | float(0) | round(2) ~
+              '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.refrigerator_table_receptacle_power_minute_average
+            name: Fridge
+            icon: mdi:fridge
+            read_only_slider: true
+            min_value: 0
+            max_value: 500
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.refrigerator_table_receptacle_power_minute_average'')
+              | float(0) | round(0) ~ '' W'' }}'
+            - '{{ states(''sensor.refrigerator_table_receptacle_energy_today'') |
+              float(0) | round(2) ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.kitchen_receptacles_power_minute_average
+            name: Kitchen
+            icon: mdi:countertop
+            read_only_slider: true
+            min_value: 0
+            max_value: 400
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.kitchen_receptacles_power_minute_average'') | float(0)
+              | round(0) ~ '' W'' }}'
+            - '{{ states(''sensor.kitchen_receptacles_energy_today'') | float(0) |
+              round(2) ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.networknonups_energy_power
+            name: Network gear
+            icon: mdi:router-network
+            read_only_slider: true
+            min_value: 0
+            max_value: 500
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.networknonups_energy_power'') | float(0) | round(0)
+              ~ '' W'' }}'
+            - '{{ states(''sensor.networknonups_energy_today'') | float(0) | round(2)
+              ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.klipper_energy_power
+            name: Printer
+            icon: mdi:printer-3d
+            read_only_slider: true
+            min_value: 0
+            max_value: 300
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.klipper_energy_power'') | float(0) | round(0) ~
+              '' W'' }}'
+            - '{{ states(''sensor.klipperos_energy_today'') | float(0) | round(2)
+              ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.microwave_power_minute_average
+            name: Microwave
+            icon: mdi:microwave
+            read_only_slider: true
+            min_value: 0
+            max_value: 300
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.microwave_power_minute_average'') | float(0) | round(0)
+              ~ '' W'' }}'
+            - '{{ states(''sensor.microwave_energy_today'') | float(0) | round(2)
+              ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.ceiling_lights_fan_power_minute_average
+            name: Ceiling
+            icon: mdi:ceiling-light
+            read_only_slider: true
+            min_value: 0
+            max_value: 200
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.ceiling_lights_fan_power_minute_average'') | float(0)
+              | round(0) ~ '' W'' }}'
+            - '{{ states(''sensor.ceiling_lights_fan_energy_today'') | float(0) |
+              round(2) ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.stove_power_minute_average
+            name: Stove
+            icon: mdi:stove
+            read_only_slider: true
+            min_value: 0
+            max_value: 200
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.stove_power_minute_average'') | float(0) | round(0)
+              ~ '' W'' }}'
+            - '{{ states(''sensor.stove_energy_today'') | float(0) | round(2) ~ ''
+              kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.dishwasher_power_minute_average
+            name: Dishwasher
+            icon: mdi:dishwasher
+            read_only_slider: true
+            min_value: 0
+            max_value: 200
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.dishwasher_power_minute_average'') | float(0) |
+              round(0) ~ '' W'' }}'
+            - '{{ states(''sensor.dishwasher_energy_today'') | float(0) | round(2)
+              ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.bathroom_receptacle_power_minute_average
+            name: Bath plug
+            icon: mdi:power-plug
+            read_only_slider: true
+            min_value: 0
+            max_value: 150
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.bathroom_receptacle_power_minute_average'') | float(0)
+              | round(0) ~ '' W'' }}'
+            - '{{ states(''sensor.bathroom_receptacle_energy_today'') | float(0) |
+              round(2) ~ '' kWh today'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.wled_squares_power
+            name: WLED
+            icon: mdi:wall-sconce-flat
+            read_only_slider: true
+            min_value: 0
+            max_value: 80
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content:
+            - '{{ states(''sensor.wled_squares_power'') | float(0) | round(0) ~ ''
+              W'' }}'
+            - '{{ states(''sensor.wled_squares_energy'') | float(0) | round(2) ~ ''
+              kWh'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - studio_fill
+        modules:
+        - liquid_glass_light
+        liquid_glass_light:
+          radius: 32
+          blur: 8
+          saturate: 140
+          depth: 4
+          strength: 60
+          highlightOpacity: 0.4
+          showBorder: false
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#network'
+        name: Network
+        icon: mdi:wan
+        entity: sensor.bandwhich_download_mbps
+        show_header: true
+        show_close_button: true
+        show_previous_button: true
+        popup_style: bubble
+        popup_mode: default
+        with_bottom_offset: true
+        close_by_clicking_outside: true
+        width_desktop: 760px
+        bg_opacity: '86'
+        bg_blur: '16'
+        shadow_opacity: '36'
+        cards:
+        - type: custom:bubble-card
+          card_type: separator
+          name: Pipe
+          icon: mdi:swap-vertical
+          modules: []
+        - type: grid
+          columns: 2
+          square: false
+          cards:
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.bandwhich_download_mbps
+            name: Download
+            icon: mdi:download
+            read_only_slider: true
+            min_value: 0
+            max_value: 50
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content: '{{ states(''sensor.bandwhich_download_mbps'') | float(0)
+              | round(2) ~ '' Mbit/s'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - liquid_glass_light
+            - subbutton_animations
+            - studio_fill
+            liquid_glass_light:
+              radius: 32
+              blur: 8
+              saturate: 140
+              depth: 4
+              strength: 60
+              highlightOpacity: 0.4
+              showBorder: false
+            subbutton_animations:
+              subbutton1:
+                animation: spin
+                condition:
+                - condition: template
+                  value_template: '{{ states(''sensor.bandwhich_download_mbps'') |
+                    float(0) > 0.4 }}'
+            sub_button:
+              main:
+              - name: Down
+                icon: mdi:download
+                entity: sensor.bandwhich_download_mbps
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' Mb''
+                  }}'
+                tap_action:
+                  action: more-info
+              bottom: []
+          - type: custom:bubble-card
+            card_type: button
+            button_type: slider
+            entity: sensor.bandwhich_upload_mbps
+            name: Upload
+            icon: mdi:upload
+            read_only_slider: true
+            min_value: 0
+            max_value: 50
+            slider_value_position: hidden
+            show_name: true
+            show_icon: true
+            scrolling_effect: false
+            card_layout: large
+            rows: 3
+            state_content: '{{ states(''sensor.bandwhich_upload_mbps'') | float(0)
+              | round(2) ~ '' Mbit/s'' }}'
+            button_action:
+              tap_action:
+                action: more-info
+            modules:
+            - liquid_glass_light
+            - studio_fill
+            liquid_glass_light:
+              radius: 32
+              blur: 8
+              saturate: 140
+              depth: 4
+              strength: 60
+              highlightOpacity: 0.4
+              showBorder: false
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 2
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: Down
+                icon: mdi:download
+                entity: sensor.bandwhich_download
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' B/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Up
+                icon: mdi:upload
+                entity: sensor.bandwhich_upload
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' B/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: NAS down
+                icon: mdi:nas
+                entity: sensor.nonpinas_download_throughput
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) }}'
+                tap_action:
+                  action: more-info
+              - name: NAS up
+                icon: mdi:nas
+                entity: sensor.nonpinas_upload_throughput
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' Mb''
+                  }}'
+                tap_action:
+                  action: more-info
+          modules: []
+        - type: custom:bubble-card
+          card_type: separator
+          name: LAN
+          icon: mdi:lan
+          modules: []
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 2
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: Home
+                icon: mdi:home-network
+                entity: sensor.bandwhich_lan_home
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' hosts''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Tracked
+                icon: mdi:radar
+                entity: sensor.bandwhich_lan_tracked
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' hosts''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Unnamed
+                icon: mdi:help-network
+                entity: sensor.bandwhich_unnamed_lan
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' hosts''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: WAN
+                icon: mdi:wan
+                entity: binary_sensor.onhub_wan_status
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: state
+                tap_action:
+                  action: more-info
+              - name: Tailscale
+                icon: mdi:vpn
+                entity: sensor.system_monitor_ipv4_address_tailscale0
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: state
+                tap_action:
+                  action: more-info
+          modules: []
+        - type: custom:bubble-card
+          card_type: separator
+          name: nonpinas
+          icon: mdi:nas
+          modules: []
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 3
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: CPU
+                icon: mdi:cpu-64-bit
+                entity: sensor.nonpinas_cpu_utilization_total
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+              - name: Load
+                icon: mdi:chart-line
+                entity: sensor.nonpinas_cpu_load_average_1_min
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) }}'
+                tap_action:
+                  action: more-info
+              - name: Memory
+                icon: mdi:memory
+                entity: sensor.nonpinas_memory_usage_real
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+              - name: Volume
+                icon: mdi:harddisk
+                entity: sensor.nonpinas_volume_2_volume_used
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+              - name: Used
+                icon: mdi:database
+                entity: sensor.nonpinas_volume_2_used_space
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' TB''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Bay 1
+                icon: mdi:harddisk
+                entity: sensor.nonpinas_drive_1_temperature
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' °'' }}'
+                tap_action:
+                  action: more-info
+              - name: Bay 2
+                icon: mdi:harddisk
+                entity: sensor.nonpinas_drive_2_temperature
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' °'' }}'
+                tap_action:
+                  action: more-info
+              - name: Chassis
+                icon: mdi:thermometer
+                entity: sensor.nonpinas_temperature
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' °'' }}'
+                tap_action:
+                  action: more-info
+              - name: Vol 2
+                icon: mdi:check-circle
+                entity: sensor.nonpinas_volume_2_status
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: state
+                tap_action:
+                  action: more-info
+          modules: []
+        - type: custom:bubble-card
+          card_type: separator
+          name: DNS
+          icon: mdi:dns
+          modules: []
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 3
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: AdGuard block
+                icon: mdi:shield-check
+                entity: sensor.adguard_home_dns_queries_blocked_ratio
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(1) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+              - name: AdGuard
+                icon: mdi:shield-search
+                entity: sensor.adguard_home_dns_queries
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) }}'
+                tap_action:
+                  action: more-info
+              - name: Blocked
+                icon: mdi:shield-off
+                entity: sensor.adguard_home_dns_queries_blocked
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) }}'
+                tap_action:
+                  action: more-info
+              - name: Speed
+                icon: mdi:timer
+                entity: sensor.adguard_home_average_processing_speed
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(2) ~ '' ms''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: AnyDNS block
+                icon: mdi:shield-lock
+                entity: sensor.anydns_dns_queries_blocked_ratio
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(1) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+              - name: Encrypted
+                icon: mdi:lock
+                entity: sensor.anydns_encrypted_queries_ratio
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(1) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+              - name: Queries
+                icon: mdi:dns
+                entity: sensor.anydns_dns_queries
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) }}'
+                tap_action:
+                  action: more-info
+              - name: DoH
+                icon: mdi:lock-check
+                entity: sensor.anydns_dns_over_https_queries
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) }}'
+                tap_action:
+                  action: more-info
+          modules: []
+        - type: custom:bubble-card
+          card_type: separator
+          name: This machine
+          icon: mdi:raspberry-pi
+          modules: []
+        - type: custom:bubble-card
+          card_type: sub-buttons
+          hide_main_background: true
+          card_layout: large-sub-buttons-grid
+          rows: 2
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: center
+              group:
+              - name: In
+                icon: mdi:arrow-down
+                entity: sensor.system_monitor_network_throughput_in_end0
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) ~ '' MB/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Out
+                icon: mdi:arrow-up
+                entity: sensor.system_monitor_network_throughput_out_end0
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) ~ '' MB/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Tailscale in
+                icon: mdi:vpn
+                entity: sensor.system_monitor_network_throughput_in_tailscale0
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) ~ '' MB/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Tailscale out
+                icon: mdi:vpn
+                entity: sensor.system_monitor_network_throughput_out_tailscale0
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) ~ '' MB/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Hassio in
+                icon: mdi:home-assistant
+                entity: sensor.system_monitor_network_throughput_in_hassio
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) ~ '' MB/s''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Hassio out
+                icon: mdi:home-assistant
+                entity: sensor.system_monitor_network_throughput_out_hassio
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(3) ~ '' MB/s''
+                  }}'
+                tap_action:
+                  action: more-info
+          modules: []
+        modules:
+        - liquid_glass_light
+        liquid_glass_light:
+          radius: 32
+          blur: 8
+          saturate: 140
+          depth: 4
+          strength: 60
+          highlightOpacity: 0.4
+          showBorder: false
+      - type: custom:bubble-card
+        card_type: pop-up
+        hash: '#weather'
+        name: Weather
+        icon: mdi:weather-partly-cloudy
+        entity: weather.forecast_home
+        show_header: true
+        show_close_button: true
+        show_previous_button: true
+        popup_style: bubble
+        popup_mode: default
+        with_bottom_offset: true
+        close_by_clicking_outside: true
+        width_desktop: 520px
+        bg_opacity: '86'
+        bg_blur: '16'
+        shadow_opacity: '36'
+        cards:
+        - type: custom:bubble-card
+          card_type: separator
+          name: Outside
+          icon: mdi:weather-partly-cloudy
+          modules: []
+        - type: custom:bubble-card
+          card_type: button
+          button_type: state
+          entity: weather.forecast_home
+          name: '{{ state_attr(''weather.forecast_home'', ''temperature'') | round(0)
+            }}°'
+          icon: mdi:weather-partly-cloudy
+          show_name: true
+          show_icon: true
+          card_layout: large
+          rows: 4
+          state_content: state
+          button_action:
+            tap_action:
+              action: more-info
+          sub_button:
+            main: []
+            bottom:
+            - buttons_layout: inline
+              justify_content: fill
+              group:
+              - entity: weather.forecast_home
+                name: Humidity
+                icon: mdi:water-percent
+                show_name: true
+                show_icon: true
+                show_background: false
+                state_content: '{{ state_attr(''weather.forecast_home'', ''humidity'')
+                  | round(0) }} %'
+              - entity: weather.forecast_home
+                name: Wind
+                icon: mdi:weather-windy
+                show_name: true
+                show_icon: true
+                show_background: false
+                state_content: '{{ state_attr(''weather.forecast_home'', ''wind_speed'')
+                  | round(0) }} mph'
+              - entity: weather.forecast_home
+                name: Pressure
+                icon: mdi:gauge
+                show_name: true
+                show_icon: true
+                show_background: false
+                state_content: '{{ state_attr(''weather.forecast_home'', ''pressure'')
+                  | round(2) }} in'
+              - entity: weather.forecast_home
+                name: UV
+                icon: mdi:sun-wireless
+                show_name: true
+                show_icon: true
+                show_background: false
+                state_content: '{{ state_attr(''weather.forecast_home'', ''uv_index'')
+                  | round(1) }}'
+              - name: CO₂
+                icon: mdi:molecule-co2
+                entity: sensor.carbonoxygensquared
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' ppm''
+                  }}'
+                tap_action:
+                  action: more-info
+              - name: Indoor
+                icon: mdi:water-percent
+                entity: sensor.co2_humidity
+                show_name: true
+                show_icon: true
+                show_background: true
+                state_background: false
+                fill_width: false
+                state_content: '{{ states(entity) | float(0) | round(0) ~ '' %'' }}'
+                tap_action:
+                  action: more-info
+          modules:
+          - liquid_glass_light
+          - studio_fill
+          liquid_glass_light:
+            radius: 32
+            blur: 8
+            saturate: 140
+            depth: 4
+            strength: 60
+            highlightOpacity: 0.4
+            showBorder: false
+        modules:
+        - liquid_glass_light
+        liquid_glass_light:
+          radius: 32
+          blur: 8
+          saturate: 140
+          depth: 4
+          strength: 60
+          highlightOpacity: 0.4
+          showBorder: false
+  - type: grid
+    column_span: 2
+    cards:
+    - type: custom:bubble-card
+      card_type: sub-buttons
+      footer_mode: true
+      footer_full_width: false
+      footer_bottom_offset: 10
+      hide_main_background: true
+      rows: 2
+      sub_button:
+        main: []
+        bottom:
+        - buttons_layout: inline
+          justify_content: center
+          group:
+          - name: Lights
+            icon: mdi:floor-plan
+            entity: light.ceiling_lights
+            show_name: true
+            show_icon: true
+            show_background: true
+            state_background: true
+            fill_width: false
+            tap_action:
+              action: navigate
+              navigation_path: '#lights'
+          - name: Climate
+            icon: mdi:thermostat
+            entity: climate.carriercontroller
+            show_name: true
+            show_icon: true
+            show_background: true
+            state_background: true
+            fill_width: false
+            tap_action:
+              action: navigate
+              navigation_path: '#climate'
+          - name: Media
+            icon: mdi:play-circle
+            entity: media_player.bedroom_hub
+            show_name: true
+            show_icon: true
+            show_background: true
+            state_background: true
+            fill_width: false
+            tap_action:
+              action: navigate
+              navigation_path: '#media'
+          - name: Power
+            icon: mdi:flash
+            entity: sensor.wattmeter_power_minute_average
+            show_name: true
+            show_icon: true
+            show_background: true
+            state_background: true
+            fill_width: false
+            tap_action:
+              action: navigate
+              navigation_path: '#power'
+          - name: Network
+            icon: mdi:wan
+            entity: sensor.bandwhich_download_mbps
+            show_name: true
+            show_icon: true
+            show_background: true
+            state_background: true
+            fill_width: false
+            tap_action:
+              action: navigate
+              navigation_path: '#network'
+          - name: Weather
+            icon: mdi:weather-partly-cloudy
+            entity: weather.forecast_home
+            show_name: true
+            show_icon: true
+            show_background: true
+            state_background: true
+            fill_width: false
+            tap_action:
+              action: navigate
+              navigation_path: '#weather'
+      grid_options:
+        columns: 12
+        rows: 2
+      modules:
+      - animated_icon
+      - foldout_subbuttons
+      - bubble_hints
+      - sub_button_coloring
+      - subbutton_below
+      animated_icon:
+        ignore_state: true
+      energy_consumption_graph:
+        entity: sensor.wattmeter_power_minute_average
+  header:
+    layout: responsive
+    badges_position: top
+    badges_wrap: wrap
+background:
+  opacity: 100
+  alignment: center
+  size: auto
+  repeat: repeat
+  attachment: fixed
+  image:
+    media_content_id: media-source://image_upload/831e084620185e70540ba6dc843a28ab
+    media_content_type: image/jpeg
+    metadata:
+      title: IMG_20240324_071024.JPEG
+      thumbnail: /api/image/serve/831e084620185e70540ba6dc843a28ab/256x256
+      media_class: image
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://image_upload
