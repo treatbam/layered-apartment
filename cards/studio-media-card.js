@@ -394,6 +394,11 @@ class StudioMediaCard extends HTMLElement {
           transform: scale(0.92);
         }
 
+        .ctrl-btn:focus-visible {
+          outline: 2px solid #ffffff;
+          outline-offset: 2px;
+        }
+
         .ctrl-btn.active-accent {
           color: #0b0e17;
           border-color: transparent;
@@ -425,6 +430,11 @@ class StudioMediaCard extends HTMLElement {
           background: rgba(255, 255, 255, 0.22);
           border-radius: 3px;
           outline: none;
+        }
+
+        .vol-slider:focus-visible {
+          outline: 2px solid #ffffff;
+          outline-offset: 2px;
         }
 
         .vol-slider::-webkit-slider-thumb {
@@ -522,7 +532,7 @@ class StudioMediaCard extends HTMLElement {
                 </div>
 
                 <div class="btn-group">
-                  <button class="ctrl-btn ${isOn ? 'active-accent' : ''}" style="${isOn ? `background: ${accentColor}; box-shadow: 0 0 12px ${accentColor};` : ''}" data-action="toggle" data-entity="${entId}" title="Power">
+                  <button class="ctrl-btn ${isOn ? 'active-accent' : ''}" style="${isOn ? `background: ${accentColor}; box-shadow: 0 0 12px ${accentColor};` : ''}" data-action="toggle" data-entity="${entId}" title="Power" aria-label="Power">
                     <ha-icon icon="mdi:power" style="--mdc-icon-size: 18px;"></ha-icon>
                   </button>
                 </div>
@@ -554,25 +564,25 @@ class StudioMediaCard extends HTMLElement {
 
                 <div class="btn-group">
                   ${mediaType === 'music' ? `
-                    <button class="ctrl-btn" data-action="prev" data-entity="${entId}" title="Previous">
+                    <button class="ctrl-btn" data-action="prev" data-entity="${entId}" title="Previous" aria-label="Previous Track">
                       <ha-icon icon="mdi:skip-previous" style="--mdc-icon-size: 18px;"></ha-icon>
                     </button>
-                    <button class="ctrl-btn" data-action="play_pause" data-entity="${entId}" title="Play/Pause">
+                    <button class="ctrl-btn" data-action="play_pause" data-entity="${entId}" title="Play/Pause" aria-label="${isPlaying ? 'Pause' : 'Play'}">
                       <ha-icon icon="${isPlaying ? 'mdi:pause' : 'mdi:play'}" style="--mdc-icon-size: 18px;"></ha-icon>
                     </button>
-                    <button class="ctrl-btn" data-action="next" data-entity="${entId}" title="Next">
+                    <button class="ctrl-btn" data-action="next" data-entity="${entId}" title="Next" aria-label="Next Track">
                       <ha-icon icon="mdi:skip-next" style="--mdc-icon-size: 18px;"></ha-icon>
                     </button>
                   ` : `
-                    <button class="ctrl-btn" data-action="play_pause" data-entity="${entId}" title="Play/Pause">
+                    <button class="ctrl-btn" data-action="play_pause" data-entity="${entId}" title="Play/Pause" aria-label="${isPlaying ? 'Pause' : 'Play'}">
                       <ha-icon icon="${isPlaying ? 'mdi:pause' : 'mdi:play'}" style="--mdc-icon-size: 18px;"></ha-icon>
                     </button>
-                    <button class="ctrl-btn" data-action="mute" data-entity="${entId}" title="Mute">
+                    <button class="ctrl-btn" data-action="mute" data-entity="${entId}" title="Mute" aria-label="${isMuted ? 'Unmute' : 'Mute'}">
                       <ha-icon icon="${isMuted ? 'mdi:volume-off' : 'mdi:volume-high'}" style="--mdc-icon-size: 18px;"></ha-icon>
                     </button>
                   `}
 
-                  <button class="ctrl-btn ${showVol ? 'active-accent' : ''}" style="${showVol ? `background: ${accentColor}; box-shadow: 0 0 10px ${accentColor};` : ''}" data-action="vol_toggle" data-entity="${entId}" title="Volume Foldout">
+                  <button class="ctrl-btn ${showVol ? 'active-accent' : ''}" style="${showVol ? `background: ${accentColor}; box-shadow: 0 0 10px ${accentColor};` : ''}" data-action="vol_toggle" data-entity="${entId}" title="Volume Foldout" aria-label="Toggle Volume" aria-expanded="${showVol}">
                     <ha-icon icon="${isMuted ? 'mdi:volume-off' : 'mdi:volume-medium'}" style="--mdc-icon-size: 18px;"></ha-icon>
                   </button>
                 </div>
@@ -581,7 +591,7 @@ class StudioMediaCard extends HTMLElement {
               <!-- FOLDOUT VOLUME SLIDER -->
               <div class="volume-foldout" style="display: ${showVol ? 'flex' : 'none'};">
                 <ha-icon icon="mdi:volume-low" style="--mdc-icon-size: 16px; color: rgba(255,255,255,0.65);"></ha-icon>
-                <input type="range" class="vol-slider" min="0" max="100" value="${volLevel}" data-entity="${entId}">
+                <input type="range" class="vol-slider" min="0" max="100" value="${volLevel}" data-entity="${entId}" aria-label="Volume">
                 <ha-icon icon="mdi:volume-high" style="--mdc-icon-size: 16px; color: rgba(255,255,255,0.65);"></ha-icon>
                 <span class="vol-pct">${volLevel}%</span>
               </div>
