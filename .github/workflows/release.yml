@@ -1,0 +1,50 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install terser
+        run: pnpm add -g terser
+
+      - name: Build / Minify Cards
+        run: |
+          for file in cards/*.js; do
+            if [[ "$file" != *".min.js" ]]; then
+              minfile="${file%.js}.min.js"
+              echo "Minifying $file to $minfile"
+              terser "$file" -m -c -o "$minfile"
+            fi
+          done
+
+      - name: Commit Minified Files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add cards/*.min.js
+          git diff --staged --quiet || git commit -m "chore: auto-minify cards for release [skip ci]"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: cards/*
+          generate_release_notes: true

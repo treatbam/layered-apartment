@@ -5,7 +5,25 @@ class StudioDynamicIsland extends HTMLElement {
     this._isExpanded = false;
   }
 
+  static getStubConfig() {
+    return {
+      weather_entity: 'weather.forecast_home',
+      power_entity: 'sensor.wattmeter_power_minute_average',
+      energy_today_entity: 'sensor.wattmeter_energy_today',
+      download_entity: 'sensor.bandwhich_download_mbps',
+      upload_entity: 'sensor.bandwhich_upload_mbps',
+      music_entity: 'media_player.bedroom_speaker',
+      tv_entity: 'media_player.bedroom_tv_2',
+      party_entity: 'input_boolean.party_hue',
+      climate_entity: 'climate.carriercontroller',
+      printer_state_entity: 'sensor.mainpi_current_print_state'
+    };
+  }
+
   setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
     this._config = {
       weather_entity: 'weather.forecast_home',
       power_entity: 'sensor.wattmeter_power_minute_average',
@@ -95,6 +113,11 @@ class StudioDynamicIsland extends HTMLElement {
     const isMusicPlaying = music && music.state === 'playing';
     const isTvOn = tv && tv.state === 'on';
     const isHighPower = powerWatts > 1100;
+
+    const printer = this._hass.states[this._config.printer_state_entity];
+    const printerState = printer ? printer.state.toLowerCase() : 'standby';
+    const isPrinterError = printerState === 'error';
+    const isPrinterComplete = printerState === 'complete';
 
     const trackTitle = music?.attributes?.media_title || (isTvOn ? 'TV Active' : 'Bedroom Audio');
     const trackArtist = music?.attributes?.media_artist || (music?.attributes?.app_name || 'Music');
@@ -463,7 +486,7 @@ class StudioDynamicIsland extends HTMLElement {
         }
       </style>
 
-      <div class="island-capsule ${isParty ? 'party-mode' : ''} ${isHighPower ? 'power-alert' : ''}" id="island-main">
+      <div class="island-capsule ${isPrinterError ? 'printer-error' : isParty ? 'party-mode' : ''} ${isHighPower && !isPrinterError ? 'power-alert' : ''}" id="island-main">
         ${isExpanded ? `
           <!-- EXPANDED COCKPIT HUD -->
           <div class="expanded-hud">
@@ -472,7 +495,7 @@ class StudioDynamicIsland extends HTMLElement {
                 <ha-icon icon="mdi:home-variant" style="--mdc-icon-size: 18px; color: #00f5d4;"></ha-icon>
                 <span>Studio Live Cockpit</span>
               </div>
-              <div class="chevron-toggle" id="hud-collapse" style="cursor: pointer; padding: 4px;">
+              <div class="chevron-toggle" id="hud-collapse" style="cursor: pointer; padding: 4px;" aria-label="Collapse HUD" role="button" tabindex="0">
                 <ha-icon icon="mdi:chevron-up" style="--mdc-icon-size: 20px;"></ha-icon>
               </div>
             </div>
@@ -563,11 +586,24 @@ class StudioDynamicIsland extends HTMLElement {
             </div>
 
             <div class="media-actions">
-              <button class="action-mini-btn" id="btn-play-pause" title="Play/Pause">
+              <button class="action-mini-btn" id="btn-play-pause" title="Play/Pause" aria-label="Play/Pause">
                 <ha-icon icon="mdi:pause" style="--mdc-icon-size: 16px;"></ha-icon>
               </button>
-              <button class="action-mini-btn" id="btn-next" title="Next">
+              <button class="action-mini-btn" id="btn-next" title="Next" aria-label="Next Track">
                 <ha-icon icon="mdi:skip-next" style="--mdc-icon-size: 16px;"></ha-icon>
+              </button>
+            </div>
+          </div>
+        ` : isPrinterError ? `
+          <!-- LIVE ACTIVITY: PRINTER ERROR ACTIVE -->
+          <div class="party-activity" id="printer-error-strip">
+            <div class="party-badge">
+              <ha-icon icon="mdi:alert-circle" style="--mdc-icon-size: 20px; color: #ef4444;"></ha-icon>
+              <span>3D Printer Error Detected</span>
+            </div>
+            <div class="media-actions">
+              <button class="action-mini-btn" id="btn-printer-nav" title="View Printer" aria-label="View Printer">
+                <ha-icon icon="mdi:printer-3d" style="--mdc-icon-size: 16px;"></ha-icon>
               </button>
             </div>
           </div>
@@ -579,7 +615,7 @@ class StudioDynamicIsland extends HTMLElement {
               <span>Party Hue Active · Ambient Sound & Lights</span>
             </div>
             <div class="media-actions">
-              <button class="action-mini-btn" id="btn-party-off" title="Turn Off Party Mode">
+              <button class="action-mini-btn" id="btn-party-off" title="Turn Off Party Mode" aria-label="Turn Off Party Mode">
                 <ha-icon icon="mdi:close" style="--mdc-icon-size: 16px;"></ha-icon>
               </button>
             </div>
@@ -588,9 +624,10 @@ class StudioDynamicIsland extends HTMLElement {
           <!-- COMPACT RESTING PILL (MICRO-TELEMETRY HUD) -->
           <div class="compact-pill" id="compact-pill-view">
             <!-- LEFT: WEATHER & TEMP -->
-            <div class="pill-section pill-weather" id="chip-weather">
+            <div class="pill-section pill-weather" id="chip-weather" style="position: relative;">
               <div class="weather-icon-wrap">
                 <ha-icon icon="${weatherIcon}" style="--mdc-icon-size: 18px;"></ha-icon>
+                ${isPrinterComplete ? '<div class="notification-dot" style="position: absolute; top: -2px; left: -2px; width: 8px; height: 8px; border-radius: 50%; background:#10b981; box-shadow:0 0 6px #10b981;"></div>' : ''}
               </div>
               <span>${outdoorTemp}°</span>
             </div>
@@ -643,6 +680,15 @@ class StudioDynamicIsland extends HTMLElement {
           const nav = btn.getAttribute('data-nav');
           if (nav) this._navigate(nav);
         });
+      });
+    } else if (isPrinterError) {
+      this.shadowRoot.getElementById('printer-error-strip')?.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        this._navigate('#klipper');
+      });
+      this.shadowRoot.getElementById('btn-printer-nav')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this._navigate('#klipper');
       });
     } else if (isMusicPlaying) {
       this.shadowRoot.getElementById('media-strip')?.addEventListener('click', (e) => {

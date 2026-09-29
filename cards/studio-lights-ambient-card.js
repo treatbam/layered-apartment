@@ -6,7 +6,16 @@ class StudioLightsAmbientCard extends HTMLElement {
     this._selectedLightForColors = null;
   }
 
+  static getStubConfig() {
+    return {
+      title: 'Studio Lighting'
+    };
+  }
+
   setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
     this._config = {
       title: config.title || 'Studio Lighting',
       popup_hash: config.popup_hash || '#lights',
@@ -73,6 +82,9 @@ class StudioLightsAmbientCard extends HTMLElement {
         entity_id: entityId,
         rgb_color: value
       });
+    } else if (colorType === 'script') {
+      const scriptName = value.replace('script.', '');
+      this._hass.callService('script', scriptName, { target_entity: entityId });
     }
   }
 
@@ -233,15 +245,12 @@ class StudioLightsAmbientCard extends HTMLElement {
     const partyHueState = this._hass.states['input_boolean.party_hue']?.state === 'on';
 
     // Color/Temp preset definitions
+    // LIFX Themes / Scenes shortcuts instead of generic colors
     const colorPresets = [
-      { name: 'Candle', type: 'kelvin', value: 2200, icon: '🕯️', bg: '#FFA242' },
-      { name: 'Warm', type: 'kelvin', value: 2700, icon: '💡', bg: '#FFB973' },
-      { name: 'Neutral', type: 'kelvin', value: 4000, icon: '☀️', bg: '#FFE4B5' },
-      { name: 'Daylight', type: 'kelvin', value: 5500, icon: '❄️', bg: '#D6E9FF' },
-      { name: 'Crimson', type: 'rgb', value: [255, 0, 80], icon: '🔴', bg: '#FF0050' },
-      { name: 'Cyan', type: 'rgb', value: [0, 245, 212], icon: '🔵', bg: '#00F5D4' },
-      { name: 'Purple', type: 'rgb', value: [157, 78, 221], icon: '🟣', bg: '#9D4EDD' },
-      { name: 'Amber', type: 'rgb', value: [255, 170, 0], icon: '🟡', bg: '#FFAA00' }
+      { name: 'Warm White', type: 'kelvin', value: 2700, icon: 'mdi:white-balance-incandescent', bg: 'linear-gradient(135deg, #FFB973, #FFA242)' },
+      { name: 'Miami Theme', type: 'script', value: 'script.lifx_theme_miami', icon: 'mdi:palm-tree', bg: 'linear-gradient(135deg, #FF0050, #00F5D4)' },
+      { name: 'Cyberpunk Theme', type: 'script', value: 'script.lifx_theme_cyberpunk', icon: 'mdi:city', bg: 'linear-gradient(135deg, #9D4EDD, #00F5D4)' },
+      { name: 'Fire Effect', type: 'script', value: 'script.lifx_fireeffect', icon: 'mdi:fire', bg: 'linear-gradient(135deg, #FFAA00, #FF0050)' }
     ];
 
     this.shadowRoot.innerHTML = `
@@ -728,7 +737,7 @@ class StudioLightsAmbientCard extends HTMLElement {
           </div>
 
           <div class="header-actions">
-            <button class="master-toggle-btn" id="master-toggle">
+            <button class="master-toggle-btn" id="master-toggle" aria-label="${isAnyOn ? 'Turn All Lights Off' : 'Turn All Lights On'}">
               <ha-icon icon="${isAnyOn ? 'mdi:lightbulb-off' : 'mdi:lightbulb-on'}" style="--mdc-icon-size: 16px;"></ha-icon>
               <span>${isAnyOn ? 'All Off' : 'Turn On'}</span>
             </button>
@@ -801,7 +810,7 @@ class StudioLightsAmbientCard extends HTMLElement {
                       <div class="light-card-row ${isLightOn ? 'on' : ''}">
                         <div class="light-main-bar">
                           <div class="light-identity" data-action="toggle-single" data-entity="${s.entity_id}">
-                            <button class="light-bulb-btn ${isLightOn ? 'on' : ''}" style="${isLightOn ? `background: ${bulbColor}; box-shadow: 0 0 12px ${bulbColor};` : ''}" title="Toggle">
+                            <button class="light-bulb-btn ${isLightOn ? 'on' : ''}" style="${isLightOn ? `background: ${bulbColor}; box-shadow: 0 0 12px ${bulbColor};` : ''}" title="Toggle" aria-label="Toggle Light">
                               <ha-icon icon="${isLightOn ? 'mdi:lightbulb' : 'mdi:lightbulb-outline'}" style="--mdc-icon-size: 20px;"></ha-icon>
                             </button>
                             <div class="light-info-text">
@@ -811,7 +820,7 @@ class StudioLightsAmbientCard extends HTMLElement {
                           </div>
 
                           <div class="light-controls-right">
-                            <button class="btn-more-info" data-action="more-info" data-entity="${s.entity_id}" title="Color Picker & Details">
+                            <button class="btn-more-info" data-action="more-info" data-entity="${s.entity_id}" title="Color Picker & Details" aria-label="More Info">
                               <ha-icon icon="mdi:palette" style="--mdc-icon-size: 18px;"></ha-icon>
                             </button>
                           </div>

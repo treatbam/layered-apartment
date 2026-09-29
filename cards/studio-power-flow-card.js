@@ -17,6 +17,9 @@ class StudioPowerFlowCard extends HTMLElement {
   }
 
   setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
     this._config = {
       title: config.title || 'Studio Power Flow',
       main_entity: config.main_entity || 'sensor.wattmeter_power_minute_average',

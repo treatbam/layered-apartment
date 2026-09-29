@@ -6,7 +6,21 @@ class StudioKlipperCard extends HTMLElement {
     this._confirmCancel = false;
   }
 
+  static getStubConfig() {
+    return {
+      title: 'MainPi Klipper',
+      web_url: 'http://192.168.86.220',
+      print_state_entity: 'sensor.mainpi_current_print_state',
+      progress_entity: 'sensor.mainpi_progress',
+      extruder_temp_entity: 'sensor.mainpi_extruder_temperature',
+      bed_temp_entity: 'sensor.mainpi_bed_temperature'
+    };
+  }
+
   setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
     this._config = {
       title: config.title || 'MainPi Klipper',
       web_url: config.web_url || 'http://192.168.86.220',
