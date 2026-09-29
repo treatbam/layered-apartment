@@ -1,0 +1,3 @@
+## 2023-10-04 - Icon-Only Button Accessibility in Lovelace Cards
+**Learning:** Lovelace custom cards heavily utilize icon-only `<button>` elements (e.g. `ha-icon` inside a button) for control decks (media, climate, lights). These lack inherent accessible names, making them invisible or confusing for screen readers. Furthermore, interactive controls without `:focus-visible` styles hamper keyboard navigation.
+**Action:** When working on custom Lovelace cards, always check for icon-only buttons and range inputs. Add semantic `aria-label`s based on context (e.g. "Power", "Volume", dynamically "Play"/"Pause"), and inject `:focus-visible` outline rules to ensure keyboard accessibility. Ensure minified files are rebuilt to reflect these UX additions.
