@@ -7,7 +7,19 @@ class StudioMediaCard extends HTMLElement {
     this._lastPictures = {};
   }
 
+  static getStubConfig() {
+    return {
+      media_type: 'video',
+      title: 'Media',
+      icon: 'mdi:television',
+      entity: 'media_player.bedroom_tv_2'
+    };
+  }
+
   setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
     this._config = {
       media_type: config.media_type || (config.icon === 'mdi:television' ? 'video' : 'music'),
       title: config.title || (config.media_type === 'video' ? 'Video' : 'Music'),
@@ -564,6 +576,11 @@ class StudioMediaCard extends HTMLElement {
 
                 <div class="btn-group">
                   ${mediaType === 'music' ? `
+                    ${appName && appName.toLowerCase().includes('spotify') ? `
+                    <button class="ctrl-btn" data-action="lightshow" data-entity="${entId}" title="Spotify Lightshow Sync" aria-label="Sync Lights">
+                      <ha-icon icon="mdi:magic-staff" style="--mdc-icon-size: 18px; ${isPlaying ? `color: #1DB954;` : ''}"></ha-icon>
+                    </button>
+                    ` : ''}
                     <button class="ctrl-btn" data-action="prev" data-entity="${entId}" title="Previous" aria-label="Previous Track">
                       <ha-icon icon="mdi:skip-previous" style="--mdc-icon-size: 18px;"></ha-icon>
                     </button>
@@ -628,6 +645,10 @@ class StudioMediaCard extends HTMLElement {
             break;
           case 'next':
             this._callService(entId, 'media_next_track');
+            break;
+          case 'lightshow':
+            // Call the user's custom photons integration script or a generic Home Assistant script for beat sync
+            this._hass.callService('script', 'spotify_lightshow_sync', { entity_id: entId });
             break;
           case 'mute': {
             const isMuted = this._hass.states[entId]?.attributes?.is_volume_muted;

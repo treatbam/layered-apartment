@@ -2,9 +2,22 @@ class StudioClimateWeatherCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this._showRadar = false;
+  }
+
+  static getStubConfig() {
+    return {
+      weather_entity: 'weather.forecast_home',
+      climate_entity: 'climate.carriercontroller',
+      sun_entity: 'sun.sun',
+      humidity_entity: 'sensor.co2_humidity'
+    };
   }
 
   setConfig(config) {
+    if (!config) {
+      throw new Error("Invalid configuration");
+    }
     this._config = {
       weather_entity: 'weather.forecast_home',
       climate_entity: 'climate.carriercontroller',
@@ -111,6 +124,11 @@ class StudioClimateWeatherCard extends HTMLElement {
 
   render() {
     if (!this._hass || !this._config) return;
+
+    // Add radar integration state
+    const radarEntity = this._config.radar_entity || 'camera.radar_map_manager_radar';
+    const radar = this._hass.states[radarEntity];
+    const radarUrl = radar ? radar.attributes.entity_picture : '';
 
     const weather = this._hass.states[this._config.weather_entity] || { state: 'sunny', attributes: { temperature: 68, humidity: 50, wind_speed: 5 } };
     const climate = this._hass.states[this._config.climate_entity] || { state: 'off', attributes: { current_temperature: 72, temperature: 70, fan_mode: 'low' } };
@@ -437,6 +455,74 @@ class StudioClimateWeatherCard extends HTMLElement {
           gap: 4px;
         }
 
+        .radar-foldout {
+          display: none;
+          position: absolute;
+          inset: 0;
+          z-index: 10;
+          background: rgba(10, 14, 28, 0.95);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border-radius: 32px;
+          padding: 16px;
+          flex-direction: column;
+          gap: 12px;
+          animation: foldInRadar 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .radar-foldout.open {
+          display: flex;
+        }
+
+        @keyframes foldInRadar {
+          from { opacity: 0; transform: scale(0.95) translateY(10px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .radar-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: rgba(255, 255, 255, 0.88);
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          font-size: 13px;
+        }
+
+        .radar-close-btn {
+          background: rgba(255, 255, 255, 0.1);
+          border: none;
+          color: #fff;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s;
+        }
+
+        .radar-close-btn:hover {
+          background: rgba(255, 255, 255, 0.25);
+        }
+
+        .radar-map-wrap {
+          flex: 1;
+          border-radius: 20px;
+          overflow: hidden;
+          position: relative;
+          background: #000;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .radar-map-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
         .temp-controls {
           display: inline-flex;
           align-items: center;
@@ -709,9 +795,9 @@ class StudioClimateWeatherCard extends HTMLElement {
 
             <div class="hero-center">
               <div class="temp-controls">
-                <button class="temp-btn" id="btn-down" title="Lower Target">−</button>
+                <button class="temp-btn" id="btn-down" title="Lower Target" aria-label="Lower Target Temperature">−</button>
                 <span class="target-val">${indoorTarget}°</span>
-                <button class="temp-btn" id="btn-up" title="Raise Target">+</button>
+                <button class="temp-btn" id="btn-up" title="Raise Target" aria-label="Raise Target Temperature">+</button>
               </div>
               <span class="target-label-micro">Target Setpoint</span>
             </div>
@@ -745,11 +831,34 @@ class StudioClimateWeatherCard extends HTMLElement {
           </div>
         </div>
       </div>
+        <!-- RADAR FOLDOUT -->
+        <div class="radar-foldout ${this._showRadar ? 'open' : ''}">
+          <div class="radar-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <ha-icon icon="mdi:radar" style="--mdc-icon-size: 18px; color: #48cae4;"></ha-icon>
+              <span>Live Weather Radar</span>
+            </div>
+            <button class="radar-close-btn" id="radar-close" aria-label="Close Radar">
+              <ha-icon icon="mdi:close" style="--mdc-icon-size: 18px;"></ha-icon>
+            </button>
+          </div>
+          <div class="radar-map-wrap">
+            ${radarUrl ? `<img class="radar-map-img" src="${radarUrl}" alt="Weather Radar">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.5);">Radar Not Available</div>`}
+          </div>
+        </div>
+      </div>
     `;
 
     // Event listeners
     this.shadowRoot.getElementById('weather-nav')?.addEventListener('click', () => {
-      this._openPopup('#weather');
+      this._showRadar = true;
+      this.render();
+    });
+
+    this.shadowRoot.getElementById('radar-close')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this._showRadar = false;
+      this.render();
     });
 
     this.shadowRoot.getElementById('climate-nav')?.addEventListener('click', () => {
